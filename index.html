@@ -415,7 +415,7 @@ header nav a:hover { color: #fff; border-bottom-color: var(--gold); }
   gap:1px; background:var(--header-border);
 }
 .sold-card {
-  background:var(--charcoal); padding:1rem 1.1rem;
+  background:var(--charcoal); padding:0;
   position:relative; overflow:hidden;
   border-top: 1px solid #3A3A3A;
 }
@@ -425,6 +425,10 @@ header nav a:hover { color: #fff; border-bottom-color: var(--gold); }
   font-size:0.5rem; letter-spacing:0.1em; font-weight:700;
   padding:0.2rem 2rem; transform:rotate(45deg);
 }
+.sold-photo { aspect-ratio:3/4; overflow:hidden; }
+.sold-photo img { width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(20%) brightness(0.85); transition: filter 0.3s; }
+.sold-card:hover .sold-photo img { filter:grayscale(0%) brightness(1); }
+.sold-card-body { padding:0.85rem 1rem; }
 .sold-brand { font-size:0.58rem; letter-spacing:0.16em; text-transform:uppercase; color:#666; margin-bottom:0.25rem; }
 .sold-model { font-family:'Playfair Display',serif; font-size:0.9rem; color:#AAA; line-height:1.3; }
 
@@ -822,7 +826,7 @@ async function init() {
   try {
     const [invRes, soldRes] = await Promise.all([
       db.from('inventory').select('*').order('created_at', { ascending: false }),
-      db.from('sold_inventory').select('brand,model,ref,sale_date').order('sale_date', { ascending: false }).limit(24)
+      db.from('sold_inventory').select('brand,model,ref,sale_date,photo_urls').order('sale_date', { ascending: false }).limit(24)
     ]);
     allWatches = invRes.data || [];
     soldWatches = soldRes.data || [];
@@ -910,9 +914,16 @@ function renderWatches(watches) {
 
 function renderSold() {
   if(!soldWatches.length){ document.getElementById('sold-wrap').style.display='none'; return; }
-  document.getElementById('sold-grid').innerHTML = soldWatches.map(s=>
-    `<div class="sold-card"><div class="sold-brand">${s.brand||''}</div><div class="sold-model">${s.model||''}</div></div>`
-  ).join('');
+  document.getElementById('sold-grid').innerHTML = soldWatches.map(s => {
+    const photo = s.photo_urls && s.photo_urls[0];
+    return `<div class="sold-card">
+      ${photo ? `<div class="sold-photo"><img src="${photo}" alt="${s.brand||''} ${s.model||''}" loading="lazy"></div>` : ''}
+      <div class="sold-card-body">
+        <div class="sold-brand">${s.brand||''}</div>
+        <div class="sold-model">${s.model||''}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ═══════════════════════════════════════════

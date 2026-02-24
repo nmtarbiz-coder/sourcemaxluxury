@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SourceMax Luxury — Pre-Owned Luxury Watches</title>
+<meta name="description" content="Buy and sell pre-owned luxury watches. Rolex, Patek Philippe, Audemars Piguet, Omega and more. Authenticated, fairly priced, fast shipping.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+<script>
+  // ════════════════════════════════════════
+  //  PASTE YOUR SUPABASE VALUES HERE
+  // ════════════════════════════════════════
+  const SUPABASE_URL  = 'https://kstbnvcozplquymqecck.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzdGJudmNvenBscXV5bXFlY2NrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY5ODYsImV4cCI6MjA4NzQ1Mjk4Nn0.RqcYRWvz4O-V1L5NAne8mP-nHKff8V451nAzle3CLWU
+';
+  // ════════════════════════════════════════
+
+  // Your contact info
+  const CONTACT_PHONE   = '(555) 000-0000';
+  const CONTACT_EMAIL   = 'info@sourcemaxluxury.com';
+  const CONTACT_INSTAGRAM = 'sourcemaxluxury';
+  const CONTACT_LOCATION  = 'Conway, AR';
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0A0A0A;
+  --surface: #111111;
+  --surface2: #181818;
+  --border: #252525;
+  --border2: #2E2E2E;
+  --text: #EDE8E0;
+  --text2: #8A8278;
+  --gold: #C9A84C;
+  --gold2: #E8C97A;
+  --gold-dim: rgba(201,168,76,0.1);
+  --green: #4CAF7D;
+  --red: #C44F4F;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Courier Prime', monospace; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999; opacity: 0.35;
+}
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+/* ─── HEADER ─────────────────────────────────── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2.5rem;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 300; letter-spacing: 0.18em;
+  color: var(--gold); text-transform: uppercase;
+}
+.logo em { font-style: italic; color: var(--text); }
+.header-nav { display: flex; gap: 2rem; }
+.header-nav a {
+  font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text2); text-decoration: none; transition: color 0.15s;
+}
+.header-nav a:hover { color: var(--text); }
+.header-contact {
+  font-size: 0.65rem; letter-spacing: 0.08em; color: var(--text2);
+  display: flex; align-items: center; gap: 1rem;
+}
+.header-contact a { color: var(--gold); text-decoration: none; }
+
+/* ─── HERO ───────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.04) 0%, transparent 70%);
+}
+.hero-eyebrow {
+  font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.5rem;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 300; line-height: 1.05;
+  letter-spacing: 0.02em; color: var(--text);
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-subtitle {
+  font-size: 0.85rem; color: var(--text2); line-height: 1.8;
+  max-width: 520px; margin: 0 auto 2.5rem;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+.hero-ctas {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+.btn-primary {
+  background: var(--gold); color: #0A0A0A;
+  border: none; padding: 0.85rem 2rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; cursor: pointer;
+  text-decoration: none; display: inline-block;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--gold2); }
+.btn-secondary {
+  background: none; color: var(--text);
+  border: 1px solid var(--border2); padding: 0.85rem 2rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem; letter-spacing: 0.14em;
+  text-transform: uppercase; cursor: pointer;
+  text-decoration: none; display: inline-block;
+  transition: all 0.15s;
+}
+.btn-secondary:hover { border-color: var(--text2); }
+
+.hero-stats {
+  display: flex; gap: 3rem; justify-content: center;
+  margin-top: 4rem; padding-top: 3rem;
+  border-top: 1px solid var(--border);
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+.hero-stat { text-align: center; }
+.hero-stat-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 300; color: var(--gold);
+}
+.hero-stat-label {
+  font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text2); margin-top: 0.25rem;
+}
+
+/* ─── SECTION ─────────────────────────────────── */
+.section { padding: 5rem 2.5rem; max-width: 1400px; margin: 0 auto; }
+.section-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 2.5rem; padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem; font-weight: 300; letter-spacing: 0.04em;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.section-sub { font-size: 0.68rem; color: var(--text2); letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ─── FILTER BAR ─────────────────────────────── */
+.filter-strip {
+  display: flex; gap: 0.5rem; flex-wrap: wrap;
+  margin-bottom: 2rem; align-items: center;
+}
+.filter-input {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); padding: 0.55rem 1rem;
+  font-family: 'Courier Prime', monospace; font-size: 0.75rem;
+  outline: none; width: 280px; transition: border-color 0.15s;
+}
+.filter-input::placeholder { color: var(--text2); }
+.filter-input:focus { border-color: var(--gold); }
+.filter-select {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text2); padding: 0.55rem 0.85rem;
+  font-family: 'Courier Prime', monospace; font-size: 0.72rem; outline: none; cursor: pointer;
+}
+.filter-chip {
+  padding: 0.4rem 0.85rem; font-size: 0.65rem; letter-spacing: 0.08em;
+  text-transform: uppercase; background: var(--surface); border: 1px solid var(--border);
+  color: var(--text2); cursor: pointer; transition: all 0.15s;
+}
+.filter-chip:hover, .filter-chip.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+.results-count { font-size: 0.68rem; color: var(--text2); margin-left: auto; }
+
+/* ─── WATCH GRID ─────────────────────────────── */
+.watch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+}
+.watch-card {
+  background: var(--surface);
+  cursor: pointer;
+  transition: background 0.15s;
+  animation: fadeIn 0.4s ease both;
+  display: flex; flex-direction: column;
+}
+.watch-card:hover { background: var(--surface2); }
+.watch-card:hover .watch-photo img { transform: scale(1.03); }
+
+.watch-photo {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: var(--surface2);
+  position: relative;
+}
+.watch-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; display: block; }
+.watch-photo-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 0.5rem;
+  color: var(--text2);
+}
+.watch-photo-placeholder .ph-icon { font-size: 2.5rem; opacity: 0.25; }
+.watch-photo-placeholder .ph-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; opacity: 0.4; letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.watch-photo-count {
+  position: absolute; bottom: 0.5rem; right: 0.5rem;
+  background: rgba(0,0,0,0.7); color: var(--text2);
+  font-size: 0.58rem; padding: 0.15rem 0.4rem;
+}
+
+.watch-info { padding: 1.1rem 1.25rem; flex: 1; display: flex; flex-direction: column; }
+.watch-card-brand { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+.watch-card-model { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; line-height: 1.25; color: var(--text); margin-bottom: 0.2rem; }
+.watch-card-ref { font-size: 0.68rem; color: var(--text2); margin-bottom: 0.75rem; }
+.watch-card-details { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 0.85rem; }
+.detail-chip {
+  font-size: 0.58rem; letter-spacing: 0.06em;
+  background: var(--surface2); color: var(--text2);
+  padding: 0.12rem 0.45rem; border: 1px solid var(--border);
+}
+.watch-card-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 0.85rem; border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.watch-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 300; color: var(--gold);
+}
+.watch-inquire {
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text2); background: none; border: 1px solid var(--border2);
+  padding: 0.35rem 0.75rem; cursor: pointer; transition: all 0.15s;
+  font-family: 'Courier Prime', monospace;
+}
+.watch-inquire:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ─── LIGHTBOX ───────────────────────────────── */
+.lightbox {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.92); z-index: 600;
+  align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.lightbox.open { display: flex; }
+.lightbox-inner {
+  background: var(--surface); border: 1px solid var(--border2);
+  width: 820px; max-width: 100%; max-height: 92vh;
+  overflow-y: auto; animation: fadeIn 0.2s ease;
+  display: grid; grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 640px) { .lightbox-inner { grid-template-columns: 1fr; } }
+.lb-photos { background: var(--bg); position: relative; }
+.lb-main-photo { aspect-ratio: 1; overflow: hidden; }
+.lb-main-photo img { width: 100%; height: 100%; object-fit: cover; }
+.lb-main-placeholder {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 4rem; opacity: 0.1;
+}
+.lb-thumbs { display: flex; gap: 2px; padding: 2px; background: var(--border); overflow-x: auto; }
+.lb-thumb {
+  width: 60px; height: 60px; flex-shrink: 0; overflow: hidden;
+  cursor: pointer; opacity: 0.5; transition: opacity 0.15s;
+}
+.lb-thumb.active { opacity: 1; outline: 2px solid var(--gold); }
+.lb-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.lb-details { padding: 2rem; }
+.lb-close {
+  position: absolute; top: 0.75rem; right: 0.75rem;
+  background: rgba(0,0,0,0.6); border: none; color: var(--text);
+  width: 28px; height: 28px; border-radius: 50%; font-size: 0.9rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  z-index: 10;
+}
+.lb-brand { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+.lb-model { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; line-height: 1.2; margin-bottom: 0.35rem; }
+.lb-ref { font-size: 0.72rem; color: var(--text2); margin-bottom: 1.25rem; }
+.lb-price { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--gold); margin-bottom: 1.5rem; }
+.lb-spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+.lb-spec { background: var(--bg); border: 1px solid var(--border); padding: 0.6rem 0.75rem; }
+.lb-spec-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text2); margin-bottom: 0.2rem; }
+.lb-spec-value { font-size: 0.82rem; color: var(--text); }
+.lb-notes { font-size: 0.75rem; color: var(--text2); line-height: 1.7; margin-bottom: 1.5rem; padding: 0.85rem; background: var(--bg); border: 1px solid var(--border); }
+.lb-actions { display: flex; flex-direction: column; gap: 0.6rem; }
+.lb-btn-primary {
+  background: var(--gold); color: #0A0A0A; border: none;
+  padding: 0.85rem; font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; cursor: pointer; transition: background 0.15s;
+}
+.lb-btn-primary:hover { background: var(--gold2); }
+.lb-btn-secondary {
+  background: none; color: var(--text2); border: 1px solid var(--border2);
+  padding: 0.75rem; font-family: 'Courier Prime', monospace;
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+  transition: all 0.15s; text-align: center; text-decoration: none; display: block;
+}
+.lb-btn-secondary:hover { border-color: var(--text2); color: var(--text); }
+
+/* ─── SOLD SECTION ───────────────────────────── */
+.sold-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
+.sold-card {
+  background: var(--surface); padding: 1rem;
+  position: relative; overflow: hidden;
+}
+.sold-card::after {
+  content: 'SOLD';
+  position: absolute; top: 12px; right: -22px;
+  background: var(--red); color: #fff;
+  font-size: 0.55rem; letter-spacing: 0.1em; font-weight: 700;
+  padding: 0.2rem 2rem;
+  transform: rotate(45deg);
+}
+.sold-card-brand { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text2); margin-bottom: 0.2rem; }
+.sold-card-model { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--text2); line-height: 1.25; }
+
+/* ─── SELL YOUR WATCH ────────────────────────── */
+.sell-section { background: var(--surface); border: 1px solid var(--border); padding: 3rem; }
+.sell-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+@media (max-width: 700px) { .sell-grid { grid-template-columns: 1fr; } }
+.sell-pitch h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; margin-bottom: 1rem; }
+.sell-pitch h2 em { font-style: italic; color: var(--gold); }
+.sell-pitch p { font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin-bottom: 1rem; }
+.sell-steps { list-style: none; counter-reset: steps; margin-top: 1.5rem; }
+.sell-steps li {
+  counter-increment: steps; font-size: 0.75rem; color: var(--text2);
+  line-height: 1.7; padding-left: 2rem; position: relative; margin-bottom: 0.5rem;
+}
+.sell-steps li::before {
+  content: counter(steps);
+  position: absolute; left: 0;
+  color: var(--gold); font-weight: 700; font-size: 0.85rem;
+}
+.form-label { display: block; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text2); margin-bottom: 0.4rem; margin-top: 0.85rem; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); padding: 0.65rem 0.85rem;
+  font-family: 'Courier Prime', monospace; font-size: 0.78rem; outline: none;
+  transition: border-color 0.15s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+.form-textarea { resize: vertical; min-height: 90px; }
+.form-select option { background: var(--surface); }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+/* ─── TRUST SECTION ──────────────────────────── */
+.trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.trust-card { background: var(--surface); padding: 2rem 1.5rem; text-align: center; }
+.trust-icon { font-size: 2rem; margin-bottom: 1rem; }
+.trust-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; margin-bottom: 0.5rem; }
+.trust-desc { font-size: 0.72rem; color: var(--text2); line-height: 1.7; }
+@media (max-width: 640px) { .trust-grid { grid-template-columns: 1fr; } }
+
+/* ─── FOOTER ─────────────────────────────────── */
+footer {
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 3rem 2.5rem; margin-top: 4rem;
+}
+.footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+@media (max-width: 640px) { .footer-inner { grid-template-columns: 1fr; } }
+.footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 300; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.75rem; }
+.footer-desc { font-size: 0.72rem; color: var(--text2); line-height: 1.7; }
+.footer-heading { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 0.5rem; }
+.footer-links a { font-size: 0.72rem; color: var(--text2); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: var(--text); }
+.footer-bottom { max-width: 1400px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.footer-bottom p { font-size: 0.65rem; color: var(--text2); }
+
+/* ─── TOAST ──────────────────────────────────── */
+.toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--surface2); border: 1px solid var(--gold); color: var(--text); padding: 0.75rem 1.25rem; font-size: 0.75rem; z-index: 9000; display: none; animation: fadeIn 0.2s ease; max-width: 320px; }
+.toast.show { display: block; }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); }
+
+.empty-state { text-align: center; padding: 4rem; color: var(--text2); }
+.empty-state h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; margin-bottom: 0.5rem; color: var(--text); }
+
+/* Loading */
+#page-loader { position: fixed; inset: 0; background: var(--bg); z-index: 999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; transition: opacity 0.5s; }
+#page-loader.hidden { opacity: 0; pointer-events: none; }
+.loader-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; }
+.loader-bar { width: 120px; height: 1px; background: var(--border); position: relative; overflow: hidden; }
+.loader-bar::after { content: ''; position: absolute; left: -50%; top: 0; width: 50%; height: 100%; background: var(--gold); animation: load 1.2s ease infinite; }
+@keyframes load { to { left: 150%; } }
+</style>
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+<div id="page-loader">
+  <div class="loader-logo">🕐 SourceMax</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">🕐 Source<em>Max</em></div>
+  <nav class="header-nav">
+    <a href="#available">Available</a>
+    <a href="#sell">Sell Your Watch</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="header-contact">
+    <span id="hdr-phone"></span>
+    <a href="#contact" id="hdr-email"></a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Conway, Arkansas · Est. 2024</div>
+    <h1 class="hero-title">
+      Pre-Owned<br>
+      <em>Luxury Watches</em><br>
+      Done Right
+    </h1>
+    <p class="hero-subtitle">
+      Every watch personally sourced, authenticated, and fairly priced. 
+      Rolex, Omega, Tudor, and more — ready to wear, ready to ship.
+    </p>
+    <div class="hero-ctas">
+      <a href="#available" class="btn-primary">Browse Available Watches</a>
+      <a href="#sell" class="btn-secondary">Sell Your Watch</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-val" id="hero-available">—</div>
+        <div class="hero-stat-label">Available Now</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val" id="hero-sold">—</div>
+        <div class="hero-stat-label">Watches Sold</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">100%</div>
+        <div class="hero-stat-label">Authenticated</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST SIGNALS -->
+<div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div style="max-width:1400px;margin:0 auto;padding:0 2.5rem">
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="trust-icon">🔍</div>
+        <div class="trust-title">Personally Authenticated</div>
+        <div class="trust-desc">Every watch is inspected for authenticity and condition before listing. What you see is what you get.</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">📦</div>
+        <div class="trust-title">Fast, Insured Shipping</div>
+        <div class="trust-desc">Fully insured shipping on every order. Secure packaging, tracking provided, ships within 24 hours of payment.</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🤝</div>
+        <div class="trust-title">Fair Prices, Real Deals</div>
+        <div class="trust-desc">No retail markups. Watches priced fairly based on market comps. Trades and cash considered on all watches.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AVAILABLE INVENTORY -->
+<section class="section" id="available">
+  <div class="section-header">
+    <div>
+      <div class="section-title">Currently <em>Available</em></div>
+      <div class="section-sub" id="available-sub">Loading inventory...</div>
+    </div>
+  </div>
+
+  <div class="filter-strip">
+    <input class="filter-input" type="text" id="search-input" placeholder="Search brand, model, reference..." oninput="filterWatches()">
+    <select class="filter-select" id="brand-filter" onchange="filterWatches()">
+      <option value="">All Brands</option>
+    </select>
+    <select class="filter-select" id="sort-select" onchange="filterWatches()">
+      <option value="newest">Newest First</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+    </select>
+    <div class="results-count" id="results-count"></div>
+  </div>
+
+  <div class="watch-grid" id="watch-grid"></div>
+  <div class="empty-state" id="no-results" style="display:none">
+    <h3>No watches match your search</h3>
+    <p>Try clearing your filters or check back soon — new watches added regularly.</p>
+  </div>
+</section>
+
+<!-- RECENTLY SOLD -->
+<div style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section" id="sold-section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Recently <em>Sold</em></div>
+        <div class="section-sub">These moved fast — new watches added regularly</div>
+      </div>
+    </div>
+    <div class="sold-grid" id="sold-grid"></div>
+  </div>
+</div>
+
+<!-- SELL YOUR WATCH -->
+<section class="section" id="sell">
+  <div class="sell-section">
+    <div class="sell-grid">
+      <div class="sell-pitch">
+        <h2>Sell Your <em>Watch</em></h2>
+        <p>Looking to sell a luxury timepiece? I offer fair, competitive offers based on current market conditions — fast payment, no hassle.</p>
+        <p>Rolex, Omega, Tudor, Cartier, AP, Patek and more. Box and papers always a plus but not required.</p>
+        <ol class="sell-steps">
+          <li>Fill out the form with your watch details</li>
+          <li>I'll respond within 24 hours with an offer</li>
+          <li>Accept the offer and ship with a prepaid insured label</li>
+          <li>Get paid promptly upon receipt and verification</li>
+        </ol>
+      </div>
+      <div>
+        <label class="form-label">Your Name *</label>
+        <input class="form-input" id="sell-name" placeholder="Full name">
+        <div class="form-grid-2">
+          <div>
+            <label class="form-label">Phone</label>
+            <input class="form-input" id="sell-phone" type="tel" placeholder="(555) 000-0000">
+          </div>
+          <div>
+            <label class="form-label">Email *</label>
+            <input class="form-input" id="sell-email" type="email" placeholder="you@email.com">
+          </div>
+        </div>
+        <label class="form-label">Watch Brand *</label>
+        <input class="form-input" id="sell-brand" placeholder="e.g. Rolex, Omega, Tudor...">
+        <label class="form-label">Model / Reference</label>
+        <input class="form-input" id="sell-model" placeholder="e.g. Submariner 126610LN">
+        <label class="form-label">Box & Papers?</label>
+        <select class="form-select" id="sell-papers">
+          <option value="">— Select —</option>
+          <option>Full Set (Box + Papers)</option>
+          <option>Box Only</option>
+          <option>Papers Only</option>
+          <option>No Box, No Papers</option>
+        </select>
+        <label class="form-label">Condition & Notes</label>
+        <textarea class="form-textarea" id="sell-notes" placeholder="Describe condition, any scratches, service history, asking price if you have one..."></textarea>
+        <div style="margin-top:1rem">
+          <button class="btn-primary" onclick="submitSellInquiry()" style="width:100%;padding:0.9rem">Submit for Offer</button>
+        </div>
+        <div id="sell-form-msg" style="font-size:0.72rem;margin-top:0.75rem;text-align:center"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact" style="padding-top:2rem">
+  <div style="background:var(--surface);border:1px solid var(--border);padding:3rem;text-align:center">
+    <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Get In Touch</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;margin-bottom:0.75rem">Questions? Let's <em style="font-style:italic;color:var(--gold)">Talk</em></h2>
+    <p style="font-size:0.78rem;color:var(--text2);margin-bottom:2rem">Available by phone, email, or Instagram. Quick responses, no pressure.</p>
+    <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap">
+      <div style="text-align:center">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">📞</div>
+        <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text2);margin-bottom:0.25rem">Phone / Text</div>
+        <div id="contact-phone" style="color:var(--gold);font-size:0.9rem"></div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">✉️</div>
+        <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text2);margin-bottom:0.25rem">Email</div>
+        <a id="contact-email" style="color:var(--gold);font-size:0.9rem;text-decoration:none"></a>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">📸</div>
+        <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text2);margin-bottom:0.25rem">Instagram</div>
+        <a id="contact-instagram" style="color:var(--gold);font-size:0.9rem;text-decoration:none" target="_blank"></a>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">📍</div>
+        <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text2);margin-bottom:0.25rem">Location</div>
+        <div id="contact-location" style="color:var(--gold);font-size:0.9rem"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">🕐 SourceMax Luxury</div>
+      <p class="footer-desc">Pre-owned luxury watches personally sourced, authenticated, and fairly priced. Based in Conway, Arkansas.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Navigation</div>
+      <ul class="footer-links">
+        <li><a href="#available">Available Watches</a></li>
+        <li><a href="#sell">Sell Your Watch</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Contact</div>
+      <ul class="footer-links">
+        <li><a id="footer-phone" href="#"></a></li>
+        <li><a id="footer-email" href="#"></a></li>
+        <li><a id="footer-instagram" href="#" target="_blank"></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 SourceMax Luxury. All rights reserved.</p>
+    <p>All watches guaranteed authentic. Prices subject to change. Prior sale possible.</p>
+  </div>
+</footer>
+
+<!-- WATCH LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxOverlay(event)">
+  <div class="lightbox-inner" id="lightbox-inner">
+    <div class="lb-photos" id="lb-photos">
+      <button class="lb-close" onclick="closeLightbox()">✕</button>
+      <div id="lb-main-photo"></div>
+      <div class="lb-thumbs" id="lb-thumbs"></div>
+    </div>
+    <div class="lb-details" id="lb-details"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+let allWatches = [];
+let soldWatches = [];
+let activeLightboxPhotos = [];
+let activeLightboxIdx = 0;
+
+// Fill contact info
+document.getElementById('hdr-phone').textContent = CONTACT_PHONE;
+document.getElementById('hdr-email').textContent = CONTACT_EMAIL;
+document.getElementById('hdr-email').href = 'mailto:' + CONTACT_EMAIL;
+document.getElementById('contact-phone').textContent = CONTACT_PHONE;
+document.getElementById('contact-email').textContent = CONTACT_EMAIL;
+document.getElementById('contact-email').href = 'mailto:' + CONTACT_EMAIL;
+document.getElementById('contact-instagram').textContent = '@' + CONTACT_INSTAGRAM;
+document.getElementById('contact-instagram').href = 'https://instagram.com/' + CONTACT_INSTAGRAM;
+document.getElementById('contact-location').textContent = CONTACT_LOCATION;
+document.getElementById('footer-phone').textContent = CONTACT_PHONE;
+document.getElementById('footer-phone').href = 'tel:' + CONTACT_PHONE.replace(/\D/g,'');
+document.getElementById('footer-email').textContent = CONTACT_EMAIL;
+document.getElementById('footer-email').href = 'mailto:' + CONTACT_EMAIL;
+document.getElementById('footer-instagram').textContent = '@' + CONTACT_INSTAGRAM;
+document.getElementById('footer-instagram').href = 'https://instagram.com/' + CONTACT_INSTAGRAM;
+
+async function init() {
+  const [invRes, soldRes] = await Promise.all([
+    db.from('inventory').select('*').order('created_at', { ascending: false }),
+    db.from('sold_inventory').select('brand,model,ref,sale_date').order('sale_date', { ascending: false }).limit(20)
+  ]);
+
+  allWatches = invRes.data || [];
+  soldWatches = soldRes.data || [];
+
+  // Hero stats
+  document.getElementById('hero-available').textContent = allWatches.length;
+  document.getElementById('hero-sold').textContent = soldWatches.length + '+';
+
+  // Populate brand filter
+  const brands = [...new Set(allWatches.map(w => w.brand).filter(Boolean))].sort();
+  const brandSel = document.getElementById('brand-filter');
+  brands.forEach(b => {
+    const opt = document.createElement('option');
+    opt.value = b; opt.textContent = b;
+    brandSel.appendChild(opt);
+  });
+
+  renderWatches(allWatches);
+  renderSold();
+  hideLo();
+}
+
+function hideLo() {
+  const loader = document.getElementById('page-loader');
+  loader.classList.add('hidden');
+  setTimeout(() => loader.style.display = 'none', 600);
+}
+
+// ══════════════════════════════════════════════════
+//  RENDER WATCHES
+// ══════════════════════════════════════════════════
+function filterWatches() {
+  const search = document.getElementById('search-input').value.toLowerCase();
+  const brand = document.getElementById('brand-filter').value;
+  const sort = document.getElementById('sort-select').value;
+
+  let filtered = allWatches.filter(w => {
+    const matchSearch = `${w.brand} ${w.model} ${w.ref}`.toLowerCase().includes(search);
+    const matchBrand = !brand || w.brand === brand;
+    return matchSearch && matchBrand;
+  });
+
+  filtered.sort((a, b) => {
+    if (sort === 'price-asc') return (a.listed_price||0) - (b.listed_price||0);
+    if (sort === 'price-desc') return (b.listed_price||0) - (a.listed_price||0);
+    return new Date(b.created_at||0) - new Date(a.created_at||0);
+  });
+
+  renderWatches(filtered);
+}
+
+function renderWatches(watches) {
+  const grid = document.getElementById('watch-grid');
+  const noRes = document.getElementById('no-results');
+  const sub = document.getElementById('available-sub');
+  const count = document.getElementById('results-count');
+
+  sub.textContent = `${allWatches.length} watches available`;
+  count.textContent = watches.length !== allWatches.length ? `${watches.length} of ${allWatches.length} shown` : '';
+
+  if (!watches.length) {
+    grid.innerHTML = '';
+    noRes.style.display = 'block';
+    return;
+  }
+  noRes.style.display = 'none';
+
+  grid.innerHTML = watches.map((w, i) => {
+    const photos = w.photo_urls || [];
+    const mainPhoto = photos[0];
+    const price = w.listed_price ? '$' + Number(w.listed_price).toLocaleString() : 'Price on Request';
+    const chips = [w.condition, w.box_papers, w.case_material, w.dial_color].filter(Boolean).slice(0, 3);
+
+    return `<div class="watch-card" onclick="openLightbox('${w.id}')" style="animation-delay:${i*0.03}s">
+      <div class="watch-photo">
+        ${mainPhoto
+          ? `<img src="${mainPhoto}" alt="${w.brand} ${w.model}" loading="lazy">`
+          : `<div class="watch-photo-placeholder"><div class="ph-icon">🕐</div><div class="ph-brand">${w.brand||''}</div></div>`
+        }
+        ${photos.length > 1 ? `<div class="watch-photo-count">+${photos.length-1} photos</div>` : ''}
+      </div>
+      <div class="watch-info">
+        <div class="watch-card-brand">${w.brand||''}${w.year ? ' · ' + w.year : ''}</div>
+        <div class="watch-card-model">${w.model||''}</div>
+        <div class="watch-card-ref">${w.ref||'—'}${w.case_size?' · '+w.case_size:''}</div>
+        ${chips.length ? `<div class="watch-card-details">${chips.map(c=>`<span class="detail-chip">${c}</span>`).join('')}</div>` : ''}
+        <div class="watch-card-footer">
+          <div class="watch-price">${price}</div>
+          <button class="watch-inquire" onclick="event.stopPropagation();quickInquire('${w.brand} ${w.model}')">Inquire</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSold() {
+  if (!soldWatches.length) { document.getElementById('sold-section').style.display='none'; return; }
+  document.getElementById('sold-grid').innerHTML = soldWatches.map(s =>
+    `<div class="sold-card">
+      <div class="sold-card-brand">${s.brand||''}</div>
+      <div class="sold-card-model">${s.model||''}</div>
+    </div>`
+  ).join('');
+}
+
+// ══════════════════════════════════════════════════
+//  LIGHTBOX
+// ══════════════════════════════════════════════════
+function openLightbox(id) {
+  const w = allWatches.find(x => x.id === id);
+  if (!w) return;
+
+  const photos = w.photo_urls || [];
+  activeLightboxPhotos = photos;
+  activeLightboxIdx = 0;
+
+  // Photos panel
+  const mainEl = document.getElementById('lb-main-photo');
+  mainEl.innerHTML = photos.length
+    ? `<img src="${photos[0]}" alt="${w.brand} ${w.model}">`
+    : `<div class="lb-main-placeholder">🕐</div>`;
+
+  const thumbsEl = document.getElementById('lb-thumbs');
+  thumbsEl.innerHTML = photos.length > 1
+    ? photos.map((p,i) => `<div class="lb-thumb ${i===0?'active':''}" onclick="setLbPhoto(${i})"><img src="${p}" alt="Photo ${i+1}"></div>`).join('')
+    : '';
+
+  // Details panel
+  const price = w.listed_price ? '$' + Number(w.listed_price).toLocaleString() : 'Price on Request';
+  const specs = [
+    w.condition && {label:'Condition', val: w.condition},
+    w.box_papers && {label:'Box & Papers', val: w.box_papers},
+    w.case_size && {label:'Case Size', val: w.case_size},
+    w.case_material && {label:'Material', val: w.case_material},
+    w.movement && {label:'Movement', val: w.movement},
+    w.dial_color && {label:'Dial', val: w.dial_color},
+    w.bezel_color && {label:'Bezel', val: w.bezel_color},
+    w.bracelet_type && {label:'Bracelet', val: w.bracelet_type},
+    w.year && {label:'Year', val: w.year},
+    w.ref && {label:'Reference', val: w.ref},
+  ].filter(Boolean);
+
+  document.getElementById('lb-details').innerHTML = `
+    <div class="lb-brand">${w.brand||''}</div>
+    <div class="lb-model">${w.model||''}</div>
+    <div class="lb-ref">${w.ref||''}</div>
+    <div class="lb-price">${price}</div>
+    ${specs.length ? `<div class="lb-spec-grid">${specs.map(s=>`<div class="lb-spec"><div class="lb-spec-label">${s.label}</div><div class="lb-spec-value">${s.val}</div></div>`).join('')}</div>` : ''}
+    ${w.notes ? `<div class="lb-notes">${w.notes}</div>` : ''}
+    <div class="lb-actions">
+      <button class="lb-btn-primary" onclick="quickInquire('${w.brand} ${w.model}')">Inquire About This Watch</button>
+      <a class="lb-btn-secondary" href="sms:${CONTACT_PHONE.replace(/\D/g,'')}&body=Hi, I'm interested in the ${encodeURIComponent((w.brand||'')+' '+(w.model||''))}">Text Us Directly</a>
+      <a class="lb-btn-secondary" href="mailto:${CONTACT_EMAIL}?subject=Inquiry: ${encodeURIComponent((w.brand||'')+' '+(w.model||''))}">Send Email</a>
+    </div>
+  `;
+
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function setLbPhoto(idx) {
+  activeLightboxIdx = idx;
+  const mainEl = document.getElementById('lb-main-photo');
+  mainEl.innerHTML = `<img src="${activeLightboxPhotos[idx]}" alt="Photo ${idx+1}">`;
+  document.querySelectorAll('.lb-thumb').forEach((t,i) => t.classList.toggle('active', i===idx));
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeLightboxOverlay(e) { if(e.target===document.getElementById('lightbox')) closeLightbox(); }
+
+// ══════════════════════════════════════════════════
+//  INQUIRY
+// ══════════════════════════════════════════════════
+function quickInquire(watchName) {
+  closeLightbox();
+  document.getElementById('sell-brand').value = '';
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=Inquiry: ${encodeURIComponent(watchName)}&body=Hi, I'm interested in the ${encodeURIComponent(watchName)}. Please let me know if it's still available.`;
+}
+
+async function submitSellInquiry() {
+  const name = document.getElementById('sell-name').value.trim();
+  const email = document.getElementById('sell-email').value.trim();
+  const brand = document.getElementById('sell-brand').value.trim();
+  const model = document.getElementById('sell-model').value.trim();
+  const papers = document.getElementById('sell-papers').value;
+  const notes = document.getElementById('sell-notes').value.trim();
+  const msg = document.getElementById('sell-form-msg');
+
+  if (!name || !email || !brand) {
+    msg.style.color = 'var(--red)';
+    msg.textContent = 'Please fill in your name, email, and watch brand.';
+    return;
+  }
+
+  const body = `Sell Inquiry from ${name}\nEmail: ${email}\nPhone: ${document.getElementById('sell-phone').value}\nWatch: ${brand} ${model}\nBox & Papers: ${papers}\n\n${notes}`;
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=Sell Inquiry: ${encodeURIComponent(brand+' '+model)}&body=${encodeURIComponent(body)}`;
+
+  msg.style.color = 'var(--green)';
+  msg.textContent = 'Opening your email client... we\'ll respond within 24 hours!';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ─── BOOT
+init();
+</script>
+</body>
+</html>
